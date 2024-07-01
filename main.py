@@ -42,7 +42,8 @@ def on_data(data):
         heartrate = data[7]
         time = datetime.now().strftime('%H:%M:%S.%f')[:-3]
         writer.writerow([time,heartrate])
-        file.flush()
+        print(f"Time: {time} Heart Rate: {heartrate}")
+        # file.flush()
 
 
    
@@ -66,15 +67,15 @@ def main():
 
     # setup slave channel
     channel.set_period(8070)
-    channel.set_search_timeout(12)
+    channel.set_search_timeout(60)
     channel.set_rf_freq(57)
     channel.set_id(0, 120, 0)
-
-    try:
-        channel.open()
-        node.start()
-    finally:
-        node.stop()
+    while True:
+        try:
+            channel.open()
+            node.start()
+        finally:
+            node.stop()
 
 
 if __name__ == "__main__":
